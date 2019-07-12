@@ -138,7 +138,6 @@ bool HelloWorld::cannonShooting(cocos2d::Touch *touch, cocos2d::Event *event) {
 	_bgNode->addChild(_cannonball, yBackground);
 
 	_newEffect = MyEffects::create("bike.plist");
-	///float pos = _cannonball->getPositionX();
 	_newEffect->setPosition(kPlumePos);
 	_cannonball->addChild(_newEffect);
 	
