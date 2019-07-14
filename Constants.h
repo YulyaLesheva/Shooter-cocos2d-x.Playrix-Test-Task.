@@ -18,12 +18,11 @@ const float kZeroscaleX = 1.0f;
 const float kZeroscaleY = 1.0f;
 const float kScaleTargetX = 0.15f;
 const float kScaleTargetY = 0.15f;
-const float kplayScreenStartX = 170.5f;
-const float kplayScreenEndX = 1090.5f;
+const float kplayScreenStartX = 120.5f;
+const float kplayScreenEndX = 1265 - 120.5f;
 
 const Size kScreenSize = Size(1265.0f, 768.0f);
 const Size kplayScreen = Size(1024.0f, 768.0f);
-
 const int TAGbomb = 69;
 const int TAGcannonball = 5;
 const int TAGyellowTarget = 11;

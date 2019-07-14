@@ -13,7 +13,7 @@ USING_NS_CC;
 Scene* HelloWorld::createScene()
 {	
 	Scene *scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
 	HelloWorld *layer = HelloWorld::create();
 	scene->addChild(layer);
 
@@ -132,6 +132,12 @@ bool HelloWorld::cannonShooting(cocos2d::Touch *touch, cocos2d::Event *event) {
 
 	Vec2 touchLocation = touch->getLocation();
 	Vec2 offset = touchLocation - _cannon->getPosition();
+
+	if (touchLocation.x < kplayScreenStartX || touchLocation.x > kplayScreenEndX) {
+		return true;
+	}
+
+
 
 	_cannonball = Cannonball::createWithSpriteFrameName("Cannonball.png");
 	_cannonball->setPhysicCannonballParams();
