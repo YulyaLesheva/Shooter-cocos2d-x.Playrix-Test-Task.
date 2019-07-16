@@ -25,7 +25,6 @@ private:
 	void createTargets(CCNode *node, int maxBomb=3, int yellowTargetNumber=10, int pinkTargetNumber=10);
 	void createCannon(CCNode *node);
 	void createBackGround(CCNode *node);
-
 	int _time=30;
 	int _myScore = 0;
 
@@ -56,7 +55,7 @@ private:
 	CCLabelBMFont *_timer;
 	CCLabelBMFont *_scoreDisplay;
 	bool _acceptTouches;
-
+	void superShooting();
 public:
 	static Scene* createScene();
     virtual bool init();

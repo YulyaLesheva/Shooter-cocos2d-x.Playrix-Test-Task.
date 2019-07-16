@@ -6,10 +6,7 @@ Targets* Targets::createWithSpriteFrameName(char *fileName) {
 	auto target = new Targets;
 	if (target && target ->initWithFile(fileName)) {
 		
-		///if (fileName == "Target.png") { target->setYellowPhysicTargetParams(); }
-		///else { target->setPinkPhysicTargetParams(); }
 		target->targetParams();
-		///target->setYellowPhysicTargetParams();
 		target->autorelease();
 		return target;
 	}
@@ -23,17 +20,17 @@ void Targets::targetParams() {
 	x = (random(kplayScreenStartX, kplayScreenEndX));
 	y = (random(50, 718));
 
-	setAnchorPoint(kObjectMedium);
-	setScaleX(kScaleTargetX);
-	setScaleY(kScaleTargetY);
-	setPosition(Vec2(x, y));
+	this->setAnchorPoint(kObjectMedium);
+	this->setScaleX(kScaleTargetX);
+	this->setScaleY(kScaleTargetY);
+	this->setPosition(Vec2(x, y));
 }
 
-void Targets::physicTargetParams(float velocityLimit, int TAG, Vec2 velocity, int categoryBitmask, int collisionBitmask, int contactBitmask) {
+void Targets::physicTargetParams(float velocityLimit, int TAG, int categoryBitmask, int collisionBitmask, int contactBitmask) {
 	auto pb = PhysicsBody::createCircle(112, PhysicsMaterial(0.2f, 1.3f, 0.1f), Vec2::ZERO);
-	setPhysicsBody(pb);
+	this->setPhysicsBody(pb);
+	pb->setVelocity(Vec2(random(-1500, 1500), random(-1500, 1500)));
 	pb->setGravityEnable(false);
-	pb->setVelocity(velocity);
 	pb->setVelocityLimit(velocityLimit);
 	pb->setTag(TAG);
 	pb->setCategoryBitmask(categoryBitmask);
@@ -42,7 +39,7 @@ void Targets::physicTargetParams(float velocityLimit, int TAG, Vec2 velocity, in
 
 }
 
-void Targets::setPhysicTargetParams(float YvelocityLimit, int YTAG, Vec2 Yvelocity,
+void Targets::setPhysicTargetParams(float YvelocityLimit, int YTAG, 
 	int YcategoryBitmask, int YcollisionBitmask, int YcontactBitmask) {
-	physicTargetParams( YvelocityLimit, YTAG, Yvelocity, YcategoryBitmask, YcollisionBitmask, YcontactBitmask);
+	this->physicTargetParams(YvelocityLimit, YTAG, YcategoryBitmask, YcollisionBitmask, YcontactBitmask);
 }

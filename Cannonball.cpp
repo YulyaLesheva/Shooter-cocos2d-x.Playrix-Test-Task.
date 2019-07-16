@@ -16,14 +16,14 @@ Cannonball* Cannonball::createWithSpriteFrameName(char *fileName) {
 }
 
 void Cannonball::cannonballParams() {
-	setAnchorPoint(kObjectMedium);
-	setScale(kScaleTargetX, kScaleTargetY);
-	setPosition(kCannonPos);
+	this->setAnchorPoint(kObjectMedium);
+	this->setScale(kScaleTargetX, kScaleTargetY);
+	this->setPosition(kCannonPos);
 }
 
 void Cannonball::physicCannonballParams(int TAG, int categoryBitmask, int collisionBitmask, int contactBitmask) {
 	auto pb = PhysicsBody::createCircle(100, PhysicsMaterial(0.2f, 1.3f, 0.0f), Vec2::ZERO);
-	setPhysicsBody(pb);
+	this->setPhysicsBody(pb);
 	pb->setGravityEnable(true);
 	pb->setTag(TAG);
 	pb->setCategoryBitmask(categoryBitmask);
@@ -32,5 +32,5 @@ void Cannonball::physicCannonballParams(int TAG, int categoryBitmask, int collis
 }
 
 void Cannonball::setPhysicCannonballParams(int YTAG, int YcategoryBitmask, int YcollisionBitmask, int YcontactBitmask) {
-	physicCannonballParams(YTAG, YcategoryBitmask, YcollisionBitmask, YcontactBitmask);
+	this->physicCannonballParams(YTAG, YcategoryBitmask, YcollisionBitmask, YcontactBitmask);
 }

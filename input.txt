@@ -1,0 +1,5 @@
+countYellowTarget = 10
+countPinkTarget = 10
+maxBomb = 3
+speed = 
+time = 30

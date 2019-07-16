@@ -27,7 +27,8 @@ bool HelloWorld::init()
 	createBackGround(_bgNode);
 	createCannon(_bgNode);
 	addAim(_bgNode);
-	gameListeners();
+	///gameListeners();
+	superShooting();
 	checkCollision();
 	createTargets(_targetNode);
 	_acceptTouches = true;
@@ -100,13 +101,13 @@ void HelloWorld::createTargets(CCNode *node, int maxBomb, int yellowTargetNumber
 	for (int i = 0; i < random(1, maxBomb); i++) {
 		_target = Targets::createWithSpriteFrameName("Bomb.png");
 		_target->setPhysicTargetParams(400, TAGbomb);
-		_targetNode->addChild(_target, yBackground);
+		node->addChild(_target, yBackground);
 	}
 
 	for (int i = 0; i < yellowTargetNumber; i++) {
 		_target = Targets::createWithSpriteFrameName("Target.png");
 		_target->setPhysicTargetParams(400, TAGyellowTarget);
-		_targetNode->addChild(_target, yBackground);
+		node->addChild(_target, yBackground);
 
 	}
 
@@ -114,7 +115,7 @@ void HelloWorld::createTargets(CCNode *node, int maxBomb, int yellowTargetNumber
 
 		_target = Targets::createWithSpriteFrameName("Target2.png");
 		_target->setPhysicTargetParams(800, TAGpinkTarget);
-		_targetNode->addChild(_target, yBackground);
+		node->addChild(_target, yBackground);
 	}
 
 }
@@ -126,46 +127,43 @@ void HelloWorld::addAim(CCNode *node) {
 	node->addChild(_aim, yBackground);
 }
 
-bool HelloWorld::cannonShooting(cocos2d::Touch *touch, cocos2d::Event *event) {
+void HelloWorld::superShooting() {
+	auto eventListener = EventListenerTouchOneByOne::create();
 
-	if (!_acceptTouches) return false;
+	eventListener->onTouchBegan = [&](Touch* touch, Event* event) {
 
-	Vec2 touchLocation = touch->getLocation();
-	Vec2 offset = touchLocation - _cannon->getPosition();
+		if (!_acceptTouches) return false;
 
-	if (touchLocation.x < kplayScreenStartX || touchLocation.x > kplayScreenEndX) {
+		Vec2 touchLocation = touch->getLocation();
+		Vec2 offset = touchLocation - _cannon->getPosition();
+
+		if (touchLocation.x < kplayScreenStartX || touchLocation.x > kplayScreenEndX) {
+			return true;
+		}
+
+		_cannonball = Cannonball::createWithSpriteFrameName("Cannonball.png");
+		_cannonball->setPhysicCannonballParams();
+		_bgNode->addChild(_cannonball, yBackground);
+
+		_newEffect = MyEffects::create("bike.plist");
+		_newEffect->setPosition(kPlumePos);
+		_cannonball->addChild(_newEffect);
+
+		offset.normalize();
+
+		auto shootAmount = offset * 1024;
+		auto realDest = shootAmount + _cannonball->getPosition();
+		auto actionMove = MoveTo::create(1.0f, Vec2(realDest));
+		auto actionRemove = RemoveSelf::create();
+
+		_cannonball->runAction(Sequence::create(actionMove, actionRemove, nullptr));
+
 		return true;
-	}
 
+	};
 
-
-	_cannonball = Cannonball::createWithSpriteFrameName("Cannonball.png");
-	_cannonball->setPhysicCannonballParams();
-	_bgNode->addChild(_cannonball, yBackground);
-
-	_newEffect = MyEffects::create("bike.plist");
-	_newEffect->setPosition(kPlumePos);
-	_cannonball->addChild(_newEffect);
-	
-	offset.normalize();
-
-	auto shootAmount = offset * 1024;
-	auto realDest = shootAmount + _cannonball->getPosition();
-	auto actionMove = MoveTo::create(1.0f, Vec2(realDest));
-	auto actionRemove = RemoveSelf::create();
-
-	_cannonball->runAction(Sequence::create(actionMove, actionRemove, nullptr));
-
-	return true;
-
-}
-
-void HelloWorld::gameListeners(){
-	
-	auto listener = EventListenerTouchOneByOne::create();
-	listener->setSwallowTouches(true);
-	listener->onTouchBegan = CC_CALLBACK_2(HelloWorld::cannonShooting, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
+	eventListener->setSwallowTouches(true);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this);
 }
 
 void HelloWorld::checkCollision() {
@@ -278,3 +276,4 @@ void HelloWorld::stopGame() {
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(eventListener, this);
 
 }
+
