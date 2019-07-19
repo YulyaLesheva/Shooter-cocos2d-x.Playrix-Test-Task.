@@ -30,11 +30,22 @@ const int TAGpinkTarget = 22;
 const int TAGedges = 40;
 const int TAGplume = 99;
 
+const int PINK_VALUE = 100;
+const int YELLOW_VALUE = 1;
+
+
 enum PhysicsCategory {
 
 	None = 0, ///0
 	Target = (1 << 0),///1
 	Cannonballs = (1 << 2),///4
 	EdgeScreen = (1 << 3),///8
+
+};
+
+enum {
+	yBackground,
+	yMiddleground,
+	yForeground
 
 };

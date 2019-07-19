@@ -7,6 +7,9 @@
 #include "Aim.h"
 #include "Cannonball.h"
 #include "MyEffects.h"
+#include <string>
+#include <iostream>
+
 USING_NS_CC;
 
 
@@ -24,17 +27,16 @@ bool HelloWorld::init()
 {
 	initWithPhysics();
 	createNodes();
-	createBackGround(_bgNode);
-	createCannon(_bgNode);
-	addAim(_bgNode);
-	///gameListeners();
+	createBackGround();
+	createCannon();
+	addAim();
 	superShooting();
 	checkCollision();
-	createTargets(_targetNode);
+	createTargets();
 	_acceptTouches = true;
 
-	this->schedule(schedule_selector(HelloWorld::update), 1.0f);
-	
+	this->schedule(schedule_selector(HelloWorld::goTimer), 1.0f);
+	this->schedule(schedule_selector(HelloWorld::update), 0.5f);
 
     if ( !Scene::init())
     {
@@ -43,37 +45,37 @@ bool HelloWorld::init()
     return true;
 }
 
-void HelloWorld::createBackGround(CCNode *node){
+void HelloWorld::createBackGround(){
 
 	_phWorld = getPhysicsWorld();
 
 	_backbackground = StaticObjects::createWithSpriteFrameName("backbackground1.png");
 	_backbackground->setStaticParams(Vec2(kObjectMedium), kZeroscaleX, kZeroscaleY, Vec2(kScreenMedium));
-	node->addChild(_backbackground, yForeground);
+	_bgNode->addChild(_backbackground, yForeground);
 
 	_background = StaticObjects::createWithSpriteFrameName("background.png");
 	_background->setStaticParams(Vec2(kObjectMedium), kZeroscaleX, kZeroscaleY, Vec2(kScreenMedium));
-	node->addChild(_background, yBackground);
+	_bgNode->addChild(_background, yBackground);
 
 	_clock = StaticObjects::createWithSpriteFrameName("Clock.png");
 	_clock->setStaticParams(Vec2(kObjectMedium), kscaleX, kscaleY, Vec2(kClockPos));
-	node->addChild(_clock, yForeground);
+	_bgNode->addChild(_clock, yForeground);
 
 	_score = StaticObjects::createWithSpriteFrameName("Score1.png");
 	_score->setStaticParams(Vec2(kObjectMedium), kscaleX, kscaleY, Vec2(kScorePos));
-	node->addChild(_score, yForeground);
+	_bgNode->addChild(_score, yForeground);
 
 	_restart = StaticObjects::createWithSpriteFrameName("restart.png");
 	_restart->getRestartParams();
-	node->addChild(_restart, yBackground);
+	_bgNode->addChild(_restart, yBackground);
 
 	_scoreDisplay = CCLabelBMFont::create("0", "fontfont.fnt", 220);
 	_scoreDisplay->setPosition(kScoreNumsPos);
-	node->addChild(_scoreDisplay, yForeground);
+	_bgNode->addChild(_scoreDisplay, yForeground);
 
 	_timer = CCLabelBMFont::create(" ", "fontfont.fnt", 220);
 	_timer->setPosition(kTimerPos);
-	node->addChild(_timer, yForeground);
+	_bgNode->addChild(_timer, yForeground);
 }
 
 void HelloWorld::createNodes(){
@@ -85,29 +87,29 @@ void HelloWorld::createNodes(){
 
 }
 
-void HelloWorld::createCannon(CCNode *node) {
+void HelloWorld::createCannon() {
 	_stand = StaticObjects::createWithSpriteFrameName("Stand1.png");
 	_stand->setStaticParams(Vec2(kObjectMedium), kscaleX, kscaleY, Vec2(kStandPos));
-	node->addChild(_stand, yForeground);
+	_bgNode->addChild(_stand, yForeground);
 
 	_cannon = Cannon::createWithSpriteFrameName("Cannon.png");
 	_cannon->setCannonParams(kObjectMedium, kScaleTargetX, kScaleTargetY, kCannonPos);
-	node->addChild(_cannon, yMiddleground);
+	_bgNode->addChild(_cannon, yMiddleground);
 
 }
 
-void HelloWorld::createTargets(CCNode *node, int maxBomb, int yellowTargetNumber, int pinkTargetNumber) {
+void HelloWorld::createTargets(int maxBomb, int yellowTargetNumber, int pinkTargetNumber) {
 	
 	for (int i = 0; i < random(1, maxBomb); i++) {
 		_target = Targets::createWithSpriteFrameName("Bomb.png");
 		_target->setPhysicTargetParams(400, TAGbomb);
-		node->addChild(_target, yBackground);
+		_targetNode->addChild(_target, yBackground);
 	}
 
 	for (int i = 0; i < yellowTargetNumber; i++) {
 		_target = Targets::createWithSpriteFrameName("Target.png");
 		_target->setPhysicTargetParams(400, TAGyellowTarget);
-		node->addChild(_target, yBackground);
+		_targetNode->addChild(_target, yBackground);
 
 	}
 
@@ -115,21 +117,22 @@ void HelloWorld::createTargets(CCNode *node, int maxBomb, int yellowTargetNumber
 
 		_target = Targets::createWithSpriteFrameName("Target2.png");
 		_target->setPhysicTargetParams(800, TAGpinkTarget);
-		node->addChild(_target, yBackground);
+		_targetNode->addChild(_target, yBackground);
 	}
 
+	highScore = yellowTargetNumber * YELLOW_VALUE + pinkTargetNumber * PINK_VALUE;
 }
 
-void HelloWorld::addAim(CCNode *node) {
+void HelloWorld::addAim() {
 
 	_aim = Aim::createWithSpriteFrameName("Aim.png");
 	_aim->setAimParams(kObjectMedium, kscaleX, kscaleY);
-	node->addChild(_aim, yBackground);
+	_bgNode->addChild(_aim, yBackground);
 }
 
 void HelloWorld::superShooting() {
+	
 	auto eventListener = EventListenerTouchOneByOne::create();
-
 	eventListener->onTouchBegan = [&](Touch* touch, Event* event) {
 
 		if (!_acceptTouches) return false;
@@ -148,12 +151,12 @@ void HelloWorld::superShooting() {
 		_newEffect = MyEffects::create("bike.plist");
 		_newEffect->setPosition(kPlumePos);
 		_cannonball->addChild(_newEffect);
-
+		
 		offset.normalize();
 
-		auto shootAmount = offset * 1024;
-		auto realDest = shootAmount + _cannonball->getPosition();
-		auto actionMove = MoveTo::create(1.0f, Vec2(realDest));
+		auto shootAmount = offset * 2048;
+		auto realDest = shootAmount + kCannonPos;
+		auto actionMove = MoveTo::create(1.9f, Vec2(realDest));
 		auto actionRemove = RemoveSelf::create();
 
 		_cannonball->runAction(Sequence::create(actionMove, actionRemove, nullptr));
@@ -197,7 +200,7 @@ void HelloWorld::checkCollision() {
 		
 		if (tagFirst== TAGyellowTarget || tagSecong == TAGyellowTarget) {
 
-			raiseScore(1);
+			raiseScore(YELLOW_VALUE);
 
 			_yellowBoom->setVisible(true);
 			_yellowBoom->setPosition(bodyA->getPosition());
@@ -206,7 +209,7 @@ void HelloWorld::checkCollision() {
 		}
 		else if (tagFirst == TAGpinkTarget || tagSecong == TAGpinkTarget) {
 			
-			raiseScore(100);
+			raiseScore(PINK_VALUE);
 			_pinkBoom->setVisible(true);
 			_pinkBoom->setPosition(bodyA->getPosition());
 			_pinkBoom->runAction(Sequence::create(delay, remove, nullptr));
@@ -224,7 +227,7 @@ void HelloWorld::checkCollision() {
 	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
-void HelloWorld::update(float dt) {
+void HelloWorld::goTimer(float dt) {
 
 	_phWorld->setUpdateRate(1000.0);
 	
@@ -234,7 +237,8 @@ void HelloWorld::update(float dt) {
 		CCString *value = CCString::createWithFormat("%i", _time);
 		_timer->setString((value->getCString()));
 	}
-	if (_time <= 0 || _myScore == 1010) {
+
+	else {
 		stopGame();
 	}
 
@@ -254,16 +258,17 @@ void HelloWorld::startGame() {
 	_timer->setVisible(true);
 	_restart->setVisible(false);
 	_acceptTouches = true;
-	createTargets(_targetNode);
+	createTargets();
 
 }
 
 void HelloWorld::stopGame() {
+	
 	_acceptTouches = false;
 	_targetNode->removeAllChildren();
 	_restart->setVisible(true);
 	_timer->setVisible(false);
-
+	
 	auto eventListener = EventListenerTouchOneByOne::create();
 	eventListener->onTouchBegan = [&](Touch* touch, Event* event) {
 		Vec2 touchLocation = touch->getLocation();
@@ -277,3 +282,14 @@ void HelloWorld::stopGame() {
 
 }
 
+void HelloWorld::update(float dt) {
+
+	if (_myScore == highScore) {
+		stopGame();
+	}
+}
+
+void HelloWorld::getTxt() {
+
+	
+}

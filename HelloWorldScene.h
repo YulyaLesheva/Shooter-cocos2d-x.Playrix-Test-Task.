@@ -11,20 +11,15 @@ class Aim;
 class Cannonball;
 class MyEffects;
 
-enum {
-	yBackground,
-	yMiddleground,
-	yForeground
 
-};
 
 class HelloWorld : public cocos2d::Scene
 {
 private:
-	void addAim(CCNode *node);
-	void createTargets(CCNode *node, int maxBomb=3, int yellowTargetNumber=10, int pinkTargetNumber=10);
-	void createCannon(CCNode *node);
-	void createBackGround(CCNode *node);
+	void addAim();
+	void createTargets(int maxBomb=3, int yellowTargetNumber=10, int pinkTargetNumber=10);
+	void createCannon();
+	void createBackGround();
 	int _time=30;
 	int _myScore = 0;
 
@@ -56,21 +51,19 @@ private:
 	CCLabelBMFont *_scoreDisplay;
 	bool _acceptTouches;
 	void superShooting();
+	void standart();
 public:
 	static Scene* createScene();
     virtual bool init();
-	virtual void update(float dt);
+	virtual void goTimer(float dt);
 	void createNodes();
-	bool cannonShooting(cocos2d::Touch *touch, cocos2d::Event *event);
-	void gameListeners();
 	void checkCollision();
 	void raiseScore(int score);
 	void startGame();
 	void stopGame();
-
-
-
-
+	void getTxt();
+	void update(float dt);
+	int highScore;
     // implement the "static create()" method manually
     
 	CREATE_FUNC(HelloWorld);
