@@ -1,5 +1,1 @@
-countYellowTarget = 10
-countPinkTarget = 10
-maxBomb = 3
-speed = 
-timeBitch 300
+50

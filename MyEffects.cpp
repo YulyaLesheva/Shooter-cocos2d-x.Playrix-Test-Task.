@@ -6,7 +6,6 @@ MyEffects * MyEffects::create(char * fileName)
 {
 	auto effect = new MyEffects;
 	if (effect && effect->initWithFile(fileName)) {
-		///effect->setEffectParams();
 		effect->autorelease();
 		return effect;
 
@@ -17,25 +16,25 @@ MyEffects * MyEffects::create(char * fileName)
 
 void MyEffects::effectParams(Vec2 anchorPoint, float scaleX, float scaleY, Vec2 position, int TAG)
 {
-	setAnchorPoint(anchorPoint);
-	setScaleX(scaleX);
-	setScaleY(scaleY);
-	setPosition(position);
-	setTag(TAG);
+	this->setAnchorPoint(anchorPoint);
+	this->setScaleX(scaleX);
+	this->setScaleY(scaleY);
+	this->setPosition(position);
+	this->setTag(TAG);
 }
 
 void MyEffects::setEffectParams() {
-	effectParams(kObjectMedium, 1.35, 1.35, kPlumePos,TAGplume);
+	this->effectParams(kObjectMedium, 1.35, 1.35, kPlumePos,TAGplume);
 }
 
 void MyEffects::boomParams(float scaleX, float scaleY) {
-	setScaleX(scaleX);
-	setScaleY(scaleY);
-	setVisible(false);
+	this->setScaleX(scaleX);
+	this->setScaleY(scaleY);
+	this->setVisible(false);
 }
 
 void MyEffects::setBoomParams() {
-	boomParams(0.5, 0.5);
+	this->boomParams(0.5, 0.5);
 }
 
 

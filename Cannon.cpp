@@ -1,7 +1,5 @@
 #include "Constants.h"
 #include "Cannon.h"
-#include "Aim.h"
-#include "HelloWorldScene.h"
 USING_NS_CC;
 
 
@@ -9,7 +7,7 @@ USING_NS_CC;
 Cannon* Cannon::createWithSpriteFrameName(char *fileName) {
 	auto cannon = new Cannon;
 	if (cannon && cannon->initWithFile(fileName)) {
-		if(fileName=="Cannon.png"){ cannon->rotateCannon();}
+		cannon->rotateCannon();
 		cannon->autorelease();
 		return cannon;
 	}
@@ -18,14 +16,14 @@ Cannon* Cannon::createWithSpriteFrameName(char *fileName) {
 }
 
 void Cannon::cannonParams(Vec2 anchorPoint, float scaleX, float scaleY, Vec2 position) {
-	setAnchorPoint(anchorPoint);
-	setScaleX(scaleX);
-	setScaleY(scaleY);
-	setPosition(position);
+	this->setAnchorPoint(anchorPoint);
+	this->setScaleX(scaleX);
+	this->setScaleY(scaleY);
+	this->setPosition(position);
 }
 
 void Cannon::setCannonParams(Vec2 YanchorPoint, float YscaleX, float YscaleY, Vec2 Yposition) {
-	cannonParams(YanchorPoint, YscaleX, YscaleY, Yposition);
+	this->cannonParams(YanchorPoint, YscaleX, YscaleY, Yposition);
 }
 
 float Cannon::changingAngle(Vec2 imageCenter, float coursorX, float coursorY, float calculatedAngle) {

@@ -67,7 +67,6 @@ void HelloWorld::createBackGround(){
 	_restart->getRestartParams();
 	_bgNode->addChild(_restart, yBackground);
 	
-
 	_scoreDisplay = CCLabelBMFont::create("0", "fontfont.fnt", 220);
 	_scoreDisplay->setPosition(kScoreNumsPos);
 	_bgNode->addChild(_scoreDisplay, yForeground);
@@ -155,7 +154,7 @@ void HelloWorld::superShooting() {
 
 		auto shootAmount = offset * 2048;
 		auto realDest = shootAmount + kCannonPos;
-		auto actionMove = MoveTo::create(1.9f, Vec2(realDest));
+		auto actionMove = MoveTo::create(2.0f, Vec2(realDest));
 		auto actionRemove = RemoveSelf::create();
 
 		_cannonball->runAction(Sequence::create(actionMove, actionRemove, nullptr));
@@ -286,4 +285,9 @@ void HelloWorld::update(float dt) {
 	if (_myScore == _highScore) {
 		stopGame();
 	}
+}
+
+
+void HelloWorld::getTxt() {
+
 }

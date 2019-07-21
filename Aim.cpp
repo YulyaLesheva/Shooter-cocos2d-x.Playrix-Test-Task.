@@ -7,7 +7,6 @@ Aim* Aim::createWithSpriteFrameName(char *fileName) {
 	if ( aim && aim->initWithFile(fileName)) {
 		aim->onMouseMove();
 		aim->autorelease();
-		///aim->setAimParams();
 		return aim;
 	}
 	CC_SAFE_DELETE(aim);
@@ -27,11 +26,11 @@ void Aim::onMouseMove() {
 }
 
 void Aim::setAimParams(Vec2 YanchorPoint, float YscaleX, float YscaleY) {
-	aimParams(YanchorPoint, YscaleX, YscaleY);
+	this->aimParams(YanchorPoint, YscaleX, YscaleY);
 }
 
 void Aim::aimParams(Vec2 anchorPoint, float scaleX, float scaleY) {
-	setAnchorPoint(anchorPoint);
-	setScaleX(scaleX);
-	setScaleY(scaleY);
+	this->setAnchorPoint(anchorPoint);
+	this->setScaleX(scaleX);
+	this->setScaleY(scaleY);
 }
