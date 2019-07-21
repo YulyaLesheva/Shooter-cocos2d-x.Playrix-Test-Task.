@@ -7,8 +7,6 @@
 #include "Aim.h"
 #include "Cannonball.h"
 #include "MyEffects.h"
-#include <string>
-#include <iostream>
 
 USING_NS_CC;
 
@@ -68,6 +66,7 @@ void HelloWorld::createBackGround(){
 	_restart = StaticObjects::createWithSpriteFrameName("restart.png");
 	_restart->getRestartParams();
 	_bgNode->addChild(_restart, yBackground);
+	
 
 	_scoreDisplay = CCLabelBMFont::create("0", "fontfont.fnt", 220);
 	_scoreDisplay->setPosition(kScoreNumsPos);
@@ -120,7 +119,7 @@ void HelloWorld::createTargets(int maxBomb, int yellowTargetNumber, int pinkTarg
 		_targetNode->addChild(_target, yBackground);
 	}
 
-	highScore = yellowTargetNumber * YELLOW_VALUE + pinkTargetNumber * PINK_VALUE;
+	_highScore = yellowTargetNumber * YELLOW_VALUE + pinkTargetNumber * PINK_VALUE;
 }
 
 void HelloWorld::addAim() {
@@ -284,12 +283,7 @@ void HelloWorld::stopGame() {
 
 void HelloWorld::update(float dt) {
 
-	if (_myScore == highScore) {
+	if (_myScore == _highScore) {
 		stopGame();
 	}
-}
-
-void HelloWorld::getTxt() {
-
-	
 }

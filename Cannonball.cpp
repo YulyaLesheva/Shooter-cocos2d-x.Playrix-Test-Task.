@@ -34,3 +34,4 @@ void Cannonball::physicCannonballParams(int TAG, int categoryBitmask, int collis
 void Cannonball::setPhysicCannonballParams(int YTAG, int YcategoryBitmask, int YcollisionBitmask, int YcontactBitmask) {
 	this->physicCannonballParams(YTAG, YcategoryBitmask, YcollisionBitmask, YcontactBitmask);
 }
+

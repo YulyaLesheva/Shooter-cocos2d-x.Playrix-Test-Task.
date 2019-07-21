@@ -52,6 +52,7 @@ private:
 	bool _acceptTouches;
 	void superShooting();
 	void standart();
+	int _highScore;
 public:
 	static Scene* createScene();
     virtual bool init();
@@ -63,7 +64,7 @@ public:
 	void stopGame();
 	void getTxt();
 	void update(float dt);
-	int highScore;
+
     // implement the "static create()" method manually
     
 	CREATE_FUNC(HelloWorld);
