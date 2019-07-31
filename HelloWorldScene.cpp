@@ -7,7 +7,8 @@
 #include "Aim.h"
 #include "Cannonball.h"
 #include "MyEffects.h"
-
+#include <iostream>
+#include <fstream>
 USING_NS_CC;
 
 
@@ -31,6 +32,7 @@ bool HelloWorld::init()
 	superShooting();
 	checkCollision();
 	createTargets();
+	getTxt3();
 	_acceptTouches = true;
 
 	this->schedule(schedule_selector(HelloWorld::goTimer), 1.0f);
@@ -128,6 +130,17 @@ void HelloWorld::addAim() {
 	_bgNode->addChild(_aim, yBackground);
 }
 
+void HelloWorld::createCannonball() {
+
+	_cannonball = Cannonball::createWithSpriteFrameName("Cannonball.png");
+	_cannonball->setPhysicCannonballParams();
+	_bgNode->addChild(_cannonball, yBackground);
+
+	_newEffect = MyEffects::create("bike.plist");
+	_newEffect->setPosition(kPlumePos);
+	_cannonball->addChild(_newEffect);
+}
+
 void HelloWorld::superShooting() {
 	
 	auto eventListener = EventListenerTouchOneByOne::create();
@@ -142,15 +155,8 @@ void HelloWorld::superShooting() {
 			return true;
 		}
 
-		_cannonball = Cannonball::createWithSpriteFrameName("Cannonball.png");
-		_cannonball->setPhysicCannonballParams();
-		_bgNode->addChild(_cannonball, yBackground);
-
-		_newEffect = MyEffects::create("bike.plist");
-		_newEffect->setPosition(kPlumePos);
-		_cannonball->addChild(_newEffect);
-		
 		offset.normalize();
+		createCannonball();
 
 		auto shootAmount = offset * 2048;
 		auto realDest = shootAmount + kCannonPos;
@@ -289,5 +295,70 @@ void HelloWorld::update(float dt) {
 
 
 void HelloWorld::getTxt() {
+
+	FileUtils::getInstance()->addSearchPath("SecondApp\Resources");
+	///FileUtils::getInstance()->writeStringToFile("50", "AFile.txt");
+	///std::string myString = FileUtils::getInstance()->getStringFromFile("AFile.txt");
+	///auto newInt = std::stoi(FileUtils::getInstance()->getStringFromFile("AFile.txt"));
+	
+	std::string myString = FileUtils::getInstance()->getStringFromFile("AFile.txt");
+	int lenString = myString.length();
+
+	std::vector<std::string> commands;
+	std::string line = "Ќью-…орк Ќикс USA Ч ¬ашингтон ”изардз USA";      //строка, которую нужно разбить
+	std::string buffer = "";      //буфферна€ строка
+	for (int i = 0; i < line.size(); i++) {
+		if (line[i] != 'Ч') {      // "Ч" сплиттер
+			buffer += line[i];
+		}
+		else {
+			commands.push_back(buffer);
+			buffer = "";
+		}
+	}
+	
+
+}
+
+void HelloWorld::getTxt2() {
+
+	std::ifstream objectFile("AFile.txt");
+
+	std::string name;
+	int power;
+
+	while (objectFile >> name >> power) {
+		if (name == "myTime") {
+			int newInt = power;
+			for (int i = 0; i < newInt; i++) {
+				auto mysprite = Sprite::create("Bomb.png");
+				mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
+				_bgNode->addChild(mysprite, yForeground);
+			}
+		}
+	}
+}
+
+
+void HelloWorld::getTxt3() {
+
+	std::ifstream Filein("AFile.txt");
+
+	std::string beforeEqual = "myTime";
+	std::string afterEqual = "";
+
+	while (!Filein.eof()) {
+		std::getline(Filein, beforeEqual, '=');
+		std::getline(Filein, afterEqual, '\n');
+		int newValue = std::stoi(afterEqual);
+		
+		for (int i = 0; i < newValue; i++) {
+			auto mysprite = Sprite::create("Bomb.png");
+			mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
+			_bgNode->addChild(mysprite, yForeground);
+		}
+
+
+	}
 
 }

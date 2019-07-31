@@ -50,8 +50,6 @@ private:
 	CCLabelBMFont *_timer;
 	CCLabelBMFont *_scoreDisplay;
 	bool _acceptTouches;
-	void superShooting();
-	void standart();
 	int _highScore;
 public:
 	static Scene* createScene();
@@ -62,9 +60,12 @@ public:
 	void raiseScore(int score);
 	void startGame();
 	void stopGame();
+	void superShooting();
 	void getTxt();
+	void getTxt2();
+	void getTxt3();
 	void update(float dt);
-
+	virtual void createCannonball();
     // implement the "static create()" method manually
     
 	CREATE_FUNC(HelloWorld);

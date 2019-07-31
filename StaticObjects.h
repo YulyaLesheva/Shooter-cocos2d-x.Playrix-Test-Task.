@@ -15,7 +15,7 @@ public:
 	static StaticObjects* createWithSpriteFrameName(char *fileName);
 	void setStaticParams(Vec2 YanchorPoint, float YscaleX, float YscaleY, Vec2 Yposition);
 	void getRestartParams();
-	void getPhysicsBGParams();
+	void tryToCreate();
 };
 
 #endif // __HELLOWORLD_SCENE_STATICOBJECTS__
