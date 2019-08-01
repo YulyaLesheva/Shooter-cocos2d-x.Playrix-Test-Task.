@@ -64,6 +64,8 @@ public:
 	void getTxt();
 	void getTxt2();
 	void getTxt3();
+	void getTxt4();
+	int getTxt5(std::string varName);
 	void update(float dt);
 	virtual void createCannonball();
     // implement the "static create()" method manually

@@ -7,13 +7,12 @@
 #include "Aim.h"
 #include "Cannonball.h"
 #include "MyEffects.h"
-#include <iostream>
-#include <fstream>
+#include "TextFile.h"
 USING_NS_CC;
 
 
-Scene* HelloWorld::createScene()
-{	
+Scene* HelloWorld::createScene(){
+
 	Scene *scene = Scene::createWithPhysics();
 	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
 	HelloWorld *layer = HelloWorld::create();
@@ -22,8 +21,8 @@ Scene* HelloWorld::createScene()
 	return scene;
 }
 
-bool HelloWorld::init()
-{
+bool HelloWorld::init(){
+
 	initWithPhysics();
 	createNodes();
 	createBackGround();
@@ -32,7 +31,6 @@ bool HelloWorld::init()
 	superShooting();
 	checkCollision();
 	createTargets();
-	getTxt3();
 	_acceptTouches = true;
 
 	this->schedule(schedule_selector(HelloWorld::goTimer), 1.0f);
@@ -78,13 +76,24 @@ void HelloWorld::createBackGround(){
 	_bgNode->addChild(_timer, yForeground);
 }
 
-void HelloWorld::createNodes(){
-	
+void HelloWorld::createNodes() {
+
 	_bgNode = CCNode::create();
 	this->addChild(_bgNode);
 	_targetNode = CCNode::create();
 	this->addChild(_targetNode);
 
+	for (int i = 0; i < getValueFromTxt("Locking"); i++) {
+		auto mysprite = Sprite::create("Bomb.png");
+		mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
+		_bgNode->addChild(mysprite, yForeground);
+	}
+
+	for (int i = 0; i < getValueFromTxt("Count"); i++) {
+		auto mysprite = Sprite::create("Target.png");
+		mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
+		_bgNode->addChild(mysprite, yForeground);
+	}
 }
 
 void HelloWorld::createCannon() {
@@ -293,72 +302,3 @@ void HelloWorld::update(float dt) {
 	}
 }
 
-
-void HelloWorld::getTxt() {
-
-	FileUtils::getInstance()->addSearchPath("SecondApp\Resources");
-	///FileUtils::getInstance()->writeStringToFile("50", "AFile.txt");
-	///std::string myString = FileUtils::getInstance()->getStringFromFile("AFile.txt");
-	///auto newInt = std::stoi(FileUtils::getInstance()->getStringFromFile("AFile.txt"));
-	
-	std::string myString = FileUtils::getInstance()->getStringFromFile("AFile.txt");
-	int lenString = myString.length();
-
-	std::vector<std::string> commands;
-	std::string line = "Ќью-…орк Ќикс USA Ч ¬ашингтон ”изардз USA";      //строка, которую нужно разбить
-	std::string buffer = "";      //буфферна€ строка
-	for (int i = 0; i < line.size(); i++) {
-		if (line[i] != 'Ч') {      // "Ч" сплиттер
-			buffer += line[i];
-		}
-		else {
-			commands.push_back(buffer);
-			buffer = "";
-		}
-	}
-	
-
-}
-
-void HelloWorld::getTxt2() {
-
-	std::ifstream objectFile("AFile.txt");
-
-	std::string name;
-	int power;
-
-	while (objectFile >> name >> power) {
-		if (name == "myTime") {
-			int newInt = power;
-			for (int i = 0; i < newInt; i++) {
-				auto mysprite = Sprite::create("Bomb.png");
-				mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
-				_bgNode->addChild(mysprite, yForeground);
-			}
-		}
-	}
-}
-
-
-void HelloWorld::getTxt3() {
-
-	std::ifstream Filein("AFile.txt");
-
-	std::string beforeEqual = "myTime";
-	std::string afterEqual = "";
-
-	while (!Filein.eof()) {
-		std::getline(Filein, beforeEqual, '=');
-		std::getline(Filein, afterEqual, '\n');
-		int newValue = std::stoi(afterEqual);
-		
-		for (int i = 0; i < newValue; i++) {
-			auto mysprite = Sprite::create("Bomb.png");
-			mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
-			_bgNode->addChild(mysprite, yForeground);
-		}
-
-
-	}
-
-}
