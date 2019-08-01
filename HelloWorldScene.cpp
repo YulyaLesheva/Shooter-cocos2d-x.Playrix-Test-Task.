@@ -1,15 +1,5 @@
-#include "HelloWorldScene.h"
-#include "SimpleAudioEngine.h"
-#include "StaticObjects.h"
-#include "Cannon.h"
-#include "Constants.h"
-#include "Targets.h"
-#include "Aim.h"
-#include "Cannonball.h"
-#include "MyEffects.h"
-#include "TextFile.h"
+#include"Headers.h"
 USING_NS_CC;
-
 
 Scene* HelloWorld::createScene(){
 
@@ -23,6 +13,7 @@ Scene* HelloWorld::createScene(){
 
 bool HelloWorld::init(){
 
+	initValuesFromTxt();
 	initWithPhysics();
 	createNodes();
 	createBackGround();
@@ -30,7 +21,7 @@ bool HelloWorld::init(){
 	addAim();
 	superShooting();
 	checkCollision();
-	createTargets();
+	createTargets(_maxBomb, _countTarget, _countTarget);
 	_acceptTouches = true;
 
 	this->schedule(schedule_selector(HelloWorld::goTimer), 1.0f);
@@ -45,7 +36,6 @@ bool HelloWorld::init(){
 
 void HelloWorld::createBackGround(){
 
-	_phWorld = getPhysicsWorld();
 
 	_backbackground = StaticObjects::createWithSpriteFrameName("backbackground1.png");
 	_backbackground->setStaticParams(Vec2(kObjectMedium), kZeroscaleX, kZeroscaleY, Vec2(kScreenMedium));
@@ -83,17 +73,6 @@ void HelloWorld::createNodes() {
 	_targetNode = CCNode::create();
 	this->addChild(_targetNode);
 
-	for (int i = 0; i < getValueFromTxt("Locking"); i++) {
-		auto mysprite = Sprite::create("Bomb.png");
-		mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
-		_bgNode->addChild(mysprite, yForeground);
-	}
-
-	for (int i = 0; i < getValueFromTxt("Count"); i++) {
-		auto mysprite = Sprite::create("Target.png");
-		mysprite->setPosition(Vec2(random(0, 500), random(0, 1000)));
-		_bgNode->addChild(mysprite, yForeground);
-	}
 }
 
 void HelloWorld::createCannon() {
@@ -108,7 +87,7 @@ void HelloWorld::createCannon() {
 }
 
 void HelloWorld::createTargets(int maxBomb, int yellowTargetNumber, int pinkTargetNumber) {
-	
+
 	for (int i = 0; i < random(1, maxBomb); i++) {
 		_target = Targets::createWithSpriteFrameName("Bomb.png");
 		_target->setPhysicTargetParams(400, TAGbomb);
@@ -167,7 +146,7 @@ void HelloWorld::superShooting() {
 		offset.normalize();
 		createCannonball();
 
-		auto shootAmount = offset * 2048;
+		auto shootAmount = offset * getValueFromTxt("Speed")*2.0f;
 		auto realDest = shootAmount + kCannonPos;
 		auto actionMove = MoveTo::create(2.0f, Vec2(realDest));
 		auto actionRemove = RemoveSelf::create();
@@ -241,7 +220,8 @@ void HelloWorld::checkCollision() {
 }
 
 void HelloWorld::goTimer(float dt) {
-
+	
+	_phWorld = getPhysicsWorld();
 	_phWorld->setUpdateRate(1000.0);
 	
 	if (_time > 0) {
@@ -266,12 +246,13 @@ void HelloWorld::raiseScore(int score) {
 }
 
 void HelloWorld::startGame() {
+
 	_myScore = 0;
 	_time = 30;
 	_timer->setVisible(true);
 	_restart->setVisible(false);
 	_acceptTouches = true;
-	createTargets();
+	createTargets(_maxBomb, _countTarget, _countTarget);
 
 }
 
@@ -302,3 +283,10 @@ void HelloWorld::update(float dt) {
 	}
 }
 
+void HelloWorld::initValuesFromTxt() {
+
+	_maxBomb = getValueFromTxt("MaxBomb");
+	_countTarget = getValueFromTxt("TargetCount");
+	_time = getValueFromTxt("Time");
+	
+}

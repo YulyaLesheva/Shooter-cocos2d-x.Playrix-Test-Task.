@@ -16,12 +16,27 @@ class MyEffects;
 class HelloWorld : public cocos2d::Scene
 {
 private:
+	
+	bool _acceptTouches;
+
 	void addAim();
-	void createTargets(int maxBomb=3, int yellowTargetNumber=10, int pinkTargetNumber=10);
+	void createTargets(int maxBomb=1, int yellowTargetNumber=1, int pinkTargetNumber=1);
 	void createCannon();
 	void createBackGround();
-	int _time=30;
+	void initValuesFromTxt();
+	void startGame();
+	void stopGame();
+	void superShooting();
+	void createNodes();
+	void checkCollision();
+	void raiseScore(int score);
+	virtual void createCannonball();
+
+	int _time;
+	int _countTarget;
+	int _maxBomb;
 	int _myScore = 0;
+	int _highScore;
 
 	StaticObjects *_background;
 	StaticObjects *_backbackground;
@@ -29,45 +44,37 @@ private:
 	StaticObjects *_clock;	
 	StaticObjects *_score;
 	StaticObjects *_restart;
+
 	Cannon *_cannon;
 	Cannonball *_cannonball;
+	
 	CCNode *_bgNode;
 	CCNode *_fgNode;
 	CCNode *_targetNode;
-	CCSize _designSizeMedium;
-	CCSize _designSize;
-	Vec2 _screenMedium;
+	
 	Targets *_target;
 	Targets *_1target;
 	Targets *_2target;
-	Size *_targetSize;
+	
 	Aim *_aim;
+	
 	MyEffects *_newEffect;
-	PhysicsWorld *_phWorld;
 	MyEffects *_yellowBoom;
 	MyEffects *_pinkBoom;
 	MyEffects *_redBoom;
+	
 	CCLabelBMFont *_timer;
 	CCLabelBMFont *_scoreDisplay;
-	bool _acceptTouches;
-	int _highScore;
+	
+
+	PhysicsWorld *_phWorld;
+
 public:
 	static Scene* createScene();
     virtual bool init();
 	virtual void goTimer(float dt);
-	void createNodes();
-	void checkCollision();
-	void raiseScore(int score);
-	void startGame();
-	void stopGame();
-	void superShooting();
-	void getTxt();
-	void getTxt2();
-	void getTxt3();
-	void getTxt4();
-	int getTxt5(std::string varName);
 	void update(float dt);
-	virtual void createCannonball();
+
     // implement the "static create()" method manually
     
 	CREATE_FUNC(HelloWorld);
