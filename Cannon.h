@@ -14,7 +14,6 @@ private:
 public:
 	static Cannon* createWithSpriteFrameName(char *fileName);
 	void setCannonParams(Vec2 YanchorPoint, float YscaleX, float YscaleY, Vec2 Yposition);
-
 };
 
 #endif // __HELLOWORLD_SCENE_CANNON__

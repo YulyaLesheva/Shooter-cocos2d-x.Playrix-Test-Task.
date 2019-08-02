@@ -4,7 +4,8 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
-class Aim : public cocos2d::Sprite {
+class Aim : public cocos2d::Sprite 
+{
 private:
 	void aimParams(Vec2 anchorPoint, float scaleX, float scaleY);
 	void onMouseMove();

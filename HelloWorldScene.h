@@ -66,7 +66,6 @@ private:
 	CCLabelBMFont *_timer;
 	CCLabelBMFont *_scoreDisplay;
 	
-
 	PhysicsWorld *_phWorld;
 
 public:

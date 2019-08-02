@@ -2,8 +2,8 @@
 #include "Cannonball.h"
 USING_NS_CC;
 
-Cannonball* Cannonball::createWithSpriteFrameName(char *fileName) {
-	
+Cannonball* Cannonball::createWithSpriteFrameName(char *fileName)
+{
 	auto cannonball = new Cannonball;
 	if (cannonball && cannonball->initWithFile(fileName)){
 		cannonball->cannonballParams();
@@ -15,13 +15,15 @@ Cannonball* Cannonball::createWithSpriteFrameName(char *fileName) {
 	return nullptr;
 }
 
-void Cannonball::cannonballParams() {
+void Cannonball::cannonballParams()
+{
 	this->setAnchorPoint(kObjectMedium);
 	this->setScale(kScaleTargetX, kScaleTargetY);
 	this->setPosition(kCannonPos);
 }
 
-void Cannonball::physicCannonballParams(int TAG, int categoryBitmask, int collisionBitmask, int contactBitmask) {
+void Cannonball::physicCannonballParams(int TAG, int categoryBitmask, int collisionBitmask, int contactBitmask) 
+{
 	auto pb = PhysicsBody::createCircle(100, PhysicsMaterial(0.2f, 1.3f, 0.0f), Vec2::ZERO);
 	this->setPhysicsBody(pb);
 	pb->setGravityEnable(true);
@@ -31,7 +33,8 @@ void Cannonball::physicCannonballParams(int TAG, int categoryBitmask, int collis
 	pb->setContactTestBitmask(contactBitmask);
 }
 
-void Cannonball::setPhysicCannonballParams(int YTAG, int YcategoryBitmask, int YcollisionBitmask, int YcontactBitmask) {
+void Cannonball::setPhysicCannonballParams(int YTAG, int YcategoryBitmask, int YcollisionBitmask, int YcontactBitmask) 
+{
 	this->physicCannonballParams(YTAG, YcategoryBitmask, YcollisionBitmask, YcontactBitmask);
 }
 

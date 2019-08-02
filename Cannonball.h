@@ -4,7 +4,8 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
-class Cannonball : public cocos2d::Sprite {
+class Cannonball : public cocos2d::Sprite 
+{
 private:
 	void physicCannonballParams(int TAG, int categoryBitmask, int collisionBitmask, int contactBitmask);
 	void cannonballParams();

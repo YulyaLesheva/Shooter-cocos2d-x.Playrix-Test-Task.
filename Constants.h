@@ -34,18 +34,17 @@ const int PINK_VALUE = 100;
 const int YELLOW_VALUE = 1;
 
 
-enum PhysicsCategory {
-
+enum PhysicsCategory
+{
 	None = 0, ///0
 	Target = (1 << 0),///1
 	Cannonballs = (1 << 2),///4
 	EdgeScreen = (1 << 3),///8
-
 };
 
-enum {
+enum 
+{
 	yBackground,
 	yMiddleground,
-	yForeground
-
+	yForeground,
 };

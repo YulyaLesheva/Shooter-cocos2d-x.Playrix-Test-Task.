@@ -4,7 +4,8 @@
 #include "cocos2d.h"
 USING_NS_CC;
 
-class Targets : public cocos2d::Sprite{
+class Targets : public cocos2d::Sprite
+{
 private:
 	void targetParams();
 	void physicTargetParams(float velocityLimit, int TAG, int categoryBitmask, int collisionBitmask, int contactBitmask);
