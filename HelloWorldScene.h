@@ -30,6 +30,7 @@ private:
 	void createNodes();
 	void checkCollision();
 	void raiseScore(int score);
+	
 	virtual void createCannonball();
 
 	int _time;
@@ -37,6 +38,7 @@ private:
 	int _maxBomb;
 	int _myScore = 0;
 	int _highScore;
+	int _speed;
 
 	StaticObjects *_background;
 	StaticObjects *_backbackground;
@@ -53,8 +55,6 @@ private:
 	CCNode *_targetNode;
 	
 	Targets *_target;
-	Targets *_1target;
-	Targets *_2target;
 	
 	Aim *_aim;
 	

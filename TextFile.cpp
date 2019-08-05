@@ -5,18 +5,19 @@ USING_NS_CC;
 
 int getValueFromTxt(std::string varName)
 {
-	std::ifstream yFile("input.txt");
-	std::string yString;
-	char yEqualSign;
+	std::ifstream myFile;
+	std::string myString;
 	std::string inputString = varName;
+	char equalSign;
+	int value;
+	int outputValue;
 
-	int yValue;
-	int newValue;
+	myFile.open(CCFileUtils::sharedFileUtils()->fullPathForFilename("input.txt").c_str());
 
-	while (yFile >> yString >> yEqualSign >> yValue) {
-		if (yString == inputString) {
-			newValue = yValue;
+	while (myFile >> myString >> equalSign >> value) {
+		if (myString == inputString) {
+			outputValue = value;
 		}
 	}
-	return newValue;	
+	return outputValue;
 }

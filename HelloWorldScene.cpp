@@ -22,8 +22,9 @@ bool HelloWorld::init()
 	superShooting();
 	checkCollision();
 	createTargets(_maxBomb, _countTarget, _countTarget);
+	
 	_acceptTouches = true;
-
+	
 	this->schedule(schedule_selector(HelloWorld::goTimer), 1.0f);
 	this->schedule(schedule_selector(HelloWorld::update), 0.5f);
 
@@ -143,8 +144,7 @@ void HelloWorld::superShooting()
 		offset.normalize();
 		createCannonball();
 
-		///auto shootAmount = offset * getValueFromTxt("Speed")*2.0f;
-		auto realDest = (offset * getValueFromTxt("Speed")*2.0f) + kCannonPos;
+		auto realDest = offset * _speed * 2.0f + kCannonPos;
 		auto actionMove = MoveTo::create(2.0f, Vec2(realDest));
 		auto actionRemove = RemoveSelf::create();
 
@@ -276,7 +276,9 @@ void HelloWorld::update(float dt)
 
 void HelloWorld::initValuesFromTxt() 
 {
+	_speed = getValueFromTxt("Speed");
 	_maxBomb = getValueFromTxt("MaxBomb");
 	_countTarget = getValueFromTxt("TargetCount");
-	_time = getValueFromTxt("Time");	
+	_time = getValueFromTxt("Time");
 }
+
