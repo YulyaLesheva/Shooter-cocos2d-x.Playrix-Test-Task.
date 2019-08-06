@@ -22,7 +22,7 @@ bool HelloWorld::init()
 	superShooting();
 	checkCollision();
 	createTargets(_maxBomb, _countTarget, _countTarget);
-	
+	_phWorld = getPhysicsWorld();
 	_acceptTouches = true;
 	
 	this->schedule(schedule_selector(HelloWorld::goTimer), 1.0f);
@@ -216,7 +216,7 @@ void HelloWorld::checkCollision()
 
 void HelloWorld::goTimer(float dt)
 {	
-	_phWorld = getPhysicsWorld();
+
 	_phWorld->setUpdateRate(1000.0);
 	
 	if (_time > 0) {

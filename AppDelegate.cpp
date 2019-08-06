@@ -31,7 +31,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 	yDirector->setAnimationInterval(1.0 / 60);
 	// turn on display FPS
-	yDirector->setDisplayStats(true);
+	yDirector->setDisplayStats(false);
 
 	
 	CCScene *yHelloworld = HelloWorld::createScene();
